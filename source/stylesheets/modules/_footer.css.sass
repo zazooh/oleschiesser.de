@@ -1,0 +1,33 @@
+.mod-footer
+  width: 100%
+  min-width: 100%
+  bottom: 10px
+  left: 0
+
+  text-align: center
+
+  color: #b8b8b8
+  font-size: 14pt
+
+
+  position: fixed
+
+  +max-width(800px)
+    position: static
+    margin-top: 40px
+    font-size: 12pt
+
+  ul
+    li
+      overflow: show
+      display: inline
+
+      &:before
+        content: '|'
+        padding: 0 4px 0 4px
+
+      &:nth-child(1):before
+        content: none
+
+      a
+        text-decoration: underline

@@ -1,0 +1,95 @@
+!!! 5
+!= cc_html(lang: 'en') do
+  %head
+    %meta{:charset => 'utf-8'}
+    %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1'}
+    %title Ole Schiesser
+    %link{:rel => "shortcut icon", :href => "/favicon.ico"}
+    = stylesheet_link_tag 'application'
+    = javascript_include_tag 'modernizr'
+    = javascript_include_tag 'turbolinks'
+
+  %body
+
+    %header.mod-header
+      %h1
+        =link_to 'Ole Schiesser', '/'
+
+    #imagebox-closer{:onclick => 'closeImagebox();'}
+    #imagebox{:onclick => 'closeImagebox();'}
+
+    = yield
+
+    %footer.mod-footer
+      %ul
+        %li Ole Schiesser
+        %li Güntherstraße 88
+        %li 22087 Hamburg
+        %li
+          =link_to '+49-175-6668932', 'tel:+49-175-6668932'
+        %li
+          =link_to 'ole.schiesser@gmail.com', 'mailto:ole.schiesser@gmail.com'
+
+
+    :javascript
+      var box = null;
+      var boxCloser = null;
+      var closeTimeout = null;
+
+      var findImageBox = function() {
+        if (box === null || box === undefined) {
+          box = document.getElementById('imagebox');
+          boxCloser = document.getElementById('imagebox-closer');
+
+          var showHide = function() {
+            if (boxCloser.className === '') {
+              boxCloser.style.display = 'none';
+              box.style.display = 'none';
+            }
+          }
+          boxCloser.addEventListener("transitionend", showHide, false);
+          boxCloser.addEventListener("webkitTransitionEnd", showHide, false);
+          boxCloser.addEventListener("MSTransitionEnd", showHide, false);
+        }
+      }
+
+      function zoomImage(el) {
+        clearTimeout(closeTimeout);
+        if (window.innerWidth < 500) {
+          return false;
+        };
+        findImageBox()
+
+        box.style.backgroundImage = 'url(' + el.querySelectorAll('img')[0].src + ')';
+        boxCloser.style.display = 'block';
+        box.style.display = 'block';
+        setTimeout(function() {
+          boxCloser.className = 'shown';
+          box.className = 'shown';
+        }, 10)
+
+        document.querySelectorAll('.photostrip')[0].style.overflow = 'hidden'
+
+        return false;
+      }
+
+      function closeImagebox() {
+        findImageBox();
+
+        boxCloser.className = '';
+        box.className = '';
+
+        document.querySelectorAll('.photostrip')[0].style.overflow = 'auto'
+
+        return true;
+      }
+
+/         var _gaq = _gaq || [];
+/         _gaq.push(['_setAccount', 'UA-39021317-2']);
+/         _gaq.push(['_trackPageview']);
+/
+/         (function() {
+/           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+/           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+/           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+/         })();

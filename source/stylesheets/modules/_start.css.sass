@@ -1,0 +1,31 @@
+.mod-start
+  h2
+    font-size: 36pt
+
+    +max-width(800px)
+      font-size: 36pt
+
+    +max-width(500px)
+      font-size: 24pt
+
+  ul
+    li
+      margin-bottom: 5px
+      overflow-x: scroll
+
+      .photostrip
+        overflow-x: auto
+        white-space: nowrap
+        height: 220px
+
+        &::-webkit-scrollbar
+          display: none
+
+        +max-width(800px)
+          white-space: inherit
+          height: inherit
+          overflow: hidden
+
+        img
+          display: inline-block
+          margin-right: 10px
