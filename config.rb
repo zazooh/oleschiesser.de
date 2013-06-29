@@ -103,10 +103,14 @@ helpers do
 
   def photostrip(item)
     photos = Dir[File.join(File.dirname(__FILE__), 'source/images', item.to_s, '*.jpg')].map do |file|
-      image = JPEG.new(file)
+      options = {}
+      unless RUBY_VERSION.start_with?('1.8')
+        image = RUBY_VERSION.start_with?('1.8') ? nil : JPEG.new(file)
+        options = {:width => image.width, :height => image.height}
+      end
       relative_url = file.gsub(File.join(File.dirname(__FILE__), 'source'), '')
       '<a href="#" onclick="return zoomImage(this);">' +
-        image_tag(relative_url, :width => image.width, :height => image.height) +
+        image_tag(relative_url, options) +
       '</a>'
     end
 
@@ -125,7 +129,7 @@ helpers do
 
     output = ['<nav><ul>']
     items.each do |item, label|
-      link = link_to("<h2>#{label}</h2>", "#{item}.html", relative: true)
+      link = link_to("<h2>#{label}</h2>", "#{item}.html", :relative => true)
       if item == active_item
         output << "<li class=\"active\">#{link}"
         # output << capture_haml(&blk) if block_given?
